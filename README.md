@@ -27,6 +27,7 @@ start using the package.
 
 TODO: Include short and useful examples for package users. Add longer examples
 to `/example` folder.
+`/example/main.dart`
 
 ```dart
 const like = 'sample';
