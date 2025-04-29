@@ -20,10 +20,10 @@ jobs:
         uses: dart-lang/setup-dart@v1
 
       - name: Install dependencies
-        run: dart pub get
+        run: flutter pub get
 
       - name: Analyze code
         run: dart analyze
 
       - name: Run tests
-        run: dart test
+        run: flutter test
