@@ -9,12 +9,13 @@ class SyncOperation extends Equatable {
   final String collection;
   final dynamic data;
   final dynamic originalData;
-  int retryCount;
-  bool isCompleted;
-  DateTime createdAt;
-  DateTime? updatedAt;
+  late final int retryCount;
+  late final bool isCompleted;
+  late final DateTime createdAt;
+  late final DateTime? updatedAt;
 
-  SyncOperation({
+  SyncOperation(
+    this.updatedAt, {
     String? id,
     required this.type,
     required this.collection,
