@@ -1,35 +1,36 @@
-// sync_cubit_test.dart
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
-import 'package:smart_sync/src/concrete_sync_cubit.dart';
-import 'package:smart_sync/src/network/network_monitor.dart';
-import 'package:smart_sync/src/storage/local_storage.dart';
-import 'package:smart_sync/src/sync_cubit.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'package:smart_sync/smart_sync.dart';
+import 'package:smart_sync/src/adapters/local_adapter.dart';
+import 'package:smart_sync/src/adapters/remote_adapter.dart';
 
-// Mock classes (using mockito or another mock package)
-class MockStorage extends Mock implements LocalStorage<int> {}
-
-class MockNetworkMonitor extends Mock implements NetworkMonitor {}
+// Generate mocks
+@GenerateMocks([LocalAdapter, RemoteAdapter])
+import 'smart_sync_test.mocks.dart';
 
 void main() {
-  late MockStorage mockStorage;
-  late MockNetworkMonitor mockNetworkMonitor;
-  late SyncCubit<int> cubit;
+  late MockLocalAdapter mockLocalAdapter;
+  late MockRemoteAdapter mockRemoteAdapter;
+  late SmartSync smartSync;
 
   setUp(() {
-    mockStorage = MockStorage();
-    mockNetworkMonitor = MockNetworkMonitor();
-    cubit = TestSyncCubit(
-      // Use the concrete TestSyncCubit here
-      0,
-      storage: mockStorage,
-      networkMonitor: mockNetworkMonitor,
+    mockLocalAdapter = MockLocalAdapter();
+    mockRemoteAdapter = MockRemoteAdapter();
+
+    smartSync = SmartSync(
+      localAdapter: mockLocalAdapter,
+      remoteAdapter: mockRemoteAdapter,
     );
   });
 
-  test('should initialize with the correct state', () {
-    expect(cubit.state, 0);
-  });
+  test('initialize calls both adapters', () async {
+    when(mockLocalAdapter.initialize()).thenAnswer((_) async {});
+    when(mockRemoteAdapter.initialize()).thenAnswer((_) async {});
 
-  // Additional tests here
+    await smartSync.initialize();
+
+    verify(mockLocalAdapter.initialize()).called(1);
+    verify(mockRemoteAdapter.initialize()).called(1);
+  });
 }

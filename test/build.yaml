@@ -1,0 +1,14 @@
+targets:
+  $default:
+    builders:
+      # Disable hive_generator for test files
+      hive_generator:hive_generator:
+        generate_for:
+          exclude:
+            - test/**
+      
+      # Enable mockito only for test files
+      mockito|mockBuilder:
+        generate_for:
+          include:
+            - test/**
